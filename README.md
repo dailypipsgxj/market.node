@@ -13,3 +13,7 @@ Coming soon!
 
 ## Credits
 * [Liquibook](https://github.com/objectcomputing/liquibook) for providing an incredibly fast matching engine.
+
+## Donate
+
+Think this is cool? Donate to 1EMqiyr8twB8v13aeqhfLp95EDkhAvVs4H to show your support!
