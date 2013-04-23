@@ -38,8 +38,8 @@
 #include "http/reply.hpp"
 #include "http/request.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
 
         request_handler::request_handler(const std::string& doc_root) : doc_root_(doc_root) {}
 

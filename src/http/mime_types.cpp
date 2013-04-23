@@ -31,8 +31,8 @@
 
 #include "http/mime_types.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         namespace mime_types {
             struct mapping {
                 const char* extension;

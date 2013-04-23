@@ -35,8 +35,8 @@
 #include <vector>
 #include "header.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         /// A request received from a client.
         struct request {
             std::string method;

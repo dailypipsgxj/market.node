@@ -33,8 +33,8 @@
 #include <string>
 #include <boost/lexical_cast.hpp>
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         namespace status_strings {
             const std::string ok                    = "HTTP/1.1 200 OK\r\n";
             const std::string created               = "HTTP/1.1 201 Created\r\n";

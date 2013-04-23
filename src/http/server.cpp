@@ -32,8 +32,8 @@
 #include "http/server.hpp"
 #include <boost/bind.hpp>
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
 
         server::server(
             const std::string& address,

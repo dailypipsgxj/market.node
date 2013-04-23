@@ -3,6 +3,7 @@
 // ~~~~~~~~~~~~~~~~~~
 //
 // Copyright (c) 2003-2012 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2013 Alex Caudill (alex at furosys.com)
 //
 // Boost Software License - Version 1.0 - August 17th, 2003
 //
@@ -31,8 +32,8 @@
 #include "http/request_parser.hpp"
 #include "http/request.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
 
         request_parser::request_parser() : state_(method_start) {}
 

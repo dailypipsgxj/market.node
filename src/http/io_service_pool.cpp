@@ -35,8 +35,8 @@
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         io_service_pool::io_service_pool(std::size_t pool_size) : next_io_service_(0) {
             if (pool_size == 0) {
                 throw std::runtime_error("io_service_pool size is 0");

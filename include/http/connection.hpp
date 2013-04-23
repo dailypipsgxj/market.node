@@ -41,8 +41,8 @@
 #include "request_handler.hpp"
 #include "request_parser.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         /// Represents a single connection from a client.
         class connection : public boost::enable_shared_from_this<connection>, private boost::noncopyable {
             public:

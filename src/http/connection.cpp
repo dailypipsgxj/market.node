@@ -34,8 +34,8 @@
 #include <boost/bind.hpp>
 #include "http/request_handler.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
 
         connection::connection(boost::asio::io_service& io_service, request_handler& handler) : socket_(io_service), request_handler_(handler) {}
 

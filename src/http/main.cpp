@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 
         // Initialize the server.
         std::size_t num_threads = boost::lexical_cast<std::size_t>(argv[3]);
-        http::market::server s(argv[1], argv[2], argv[4], num_threads);
+        market::http::server s(argv[1], argv[2], argv[4], num_threads);
 
         // Run the server until stopped.
         s.run();

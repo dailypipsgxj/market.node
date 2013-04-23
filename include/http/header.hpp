@@ -33,8 +33,8 @@
 
 #include <string>
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         struct header {
             std::string name;
             std::string value;

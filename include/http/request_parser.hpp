@@ -34,8 +34,8 @@
 #include <boost/logic/tribool.hpp>
 #include <boost/tuple/tuple.hpp>
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         struct request;
         /// Parser for incoming requests.
         class request_parser {

@@ -36,8 +36,8 @@
 #include <boost/asio.hpp>
 #include "header.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         /// A reply to be sent to a client.
         struct reply {
             /// The status of the reply.

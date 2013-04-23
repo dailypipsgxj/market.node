@@ -11,7 +11,10 @@ include_directories(
 )
 
 add_executable(
-    server
+    gateway
+    src/book/order.cpp
+    src/book/depth_level.cpp
+    src/book/types.cpp
     src/http/connection.cpp
     src/http/io_service_pool.cpp
     src/http/main.cpp
@@ -23,7 +26,7 @@ add_executable(
 )
 
 target_link_libraries(
-    server
+    gateway
     ${Boost_LIBRARIES}
 )
 

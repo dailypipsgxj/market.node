@@ -40,8 +40,8 @@
 #include "io_service_pool.hpp"
 #include "request_handler.hpp"
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         /// The top-level class of the HTTP server.
         class server : private boost::noncopyable {
             public:

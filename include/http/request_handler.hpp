@@ -34,8 +34,8 @@
 #include <string>
 #include <boost/noncopyable.hpp>
 
-namespace http {
-    namespace market {
+namespace market {
+    namespace http {
         struct reply;
         struct request;
         /// The common handler for all incoming requests.
