@@ -5,8 +5,6 @@
 // Copyright (c) 2003-2012 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 // Copyright (c) 2013 (alex at furosys.com) 
 //
-// Boost Software License - Version 1.0 - August 17th, 2003
-//
 // Permission is hereby granted, free of charge, to any person or organization
 // obtaining a copy of the software and accompanying documentation covered by
 // this license (the "Software") to use, reproduce, display, distribute,
@@ -36,9 +34,9 @@
 #include <vector>
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
-#include "connection.hpp"
-#include "io_service_pool.hpp"
-#include "request_handler.hpp"
+#include "http/connection.hpp"
+#include "http/io_service_pool.hpp"
+#include "http/request_handler.hpp"
 
 namespace market {
     namespace http {
