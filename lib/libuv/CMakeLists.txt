@@ -114,3 +114,11 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD" OR ${CMAKE_SYSTEM_NAME} STREQUAL "Lin
         ${UV_SOURCES_COMMON} ${UV_SOURCES_PLATFORM_SPECIFIC}
     )
 endif()
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD") 
+    target_link_libraries(
+        uv
+        kvm
+    )
+endif()
+
