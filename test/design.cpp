@@ -56,6 +56,7 @@ class OrderBatchHandler : public market::disruptor::EventHandlerInterface<market
             market::model::Order* order
         )
         {
+            //order_book.add_order(order);
             //if (event) { 
             //    event->set_value(sequence);
             //}
@@ -63,34 +64,6 @@ class OrderBatchHandler : public market::disruptor::EventHandlerInterface<market
 
         void OnStart() {}
         void OnShutdown() {}
-};
-
-class OrderProcessor : public market::disruptor::EventProcessorInterface<market::model::Order> 
-{
-    public:
-        OrderProcessor(
-            market::disruptor::SequenceBarrierInterface* barrier
-        ) : barrier_(barrier),
-            sequence_(market::disruptor::kInitialCursorValue)
-        {}
-
-        market::disruptor::Sequence*
-        GetSequence() {
-            return &sequence_;
-        }
-
-        void Halt() {}
-        void Run() {
-            try {
-                barrier_->WaitFor(0L);
-            } catch(...) {
-                throw std::runtime_error("caught exception in OrderProcessor::Run()");
-            }
-            sequence_.set_sequence(sequence_.sequence() + 1L);
-        }
-    private:
-        market::disruptor::PaddedSequence sequence_;
-        market::disruptor::SequenceBarrierInterface* barrier_;
 };
 
 #if 0 
@@ -139,10 +112,6 @@ int main(int argc, char *argv[]) {
     int buffer_size = 1024 * 16;
     long iterations = 1000L * 1000L * 300;
 
-    // std::unique_ptr<market::model::OrderBook<5>> order_book;
-
-    std::cout << iterations << std::endl;
-
     auto input_buffer = new market::disruptor::RingBuffer<market::model::Order>(
         new OrderBufferFactory,
         buffer_size,
@@ -155,14 +124,14 @@ int main(int argc, char *argv[]) {
 
     OrderBatchHandler order_handler;
     market::disruptor::IgnoreExceptionHandler<market::model::Order> order_exception_handler;
-    market::disruptor::BatchEventProcessor<market::model::Order> processor(
+    market::model::OrderBook<5> processor(
         input_buffer,
         (market::disruptor::SequenceBarrierInterface*) barrier.get(),
         &order_handler,
         &order_exception_handler
     );
 
-    std::thread consumer(std::ref<market::disruptor::BatchEventProcessor<market::model::Order>>(processor));
+    std::thread consumer(std::ref<market::model::OrderBook<5>>(processor));
 
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);

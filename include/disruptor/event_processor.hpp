@@ -99,13 +99,13 @@ namespace market {
 
                     while (true) {
                         try {
-                            int64_t avalaible_sequence = sequence_barrier_->WaitFor(next_sequence);
+                            int64_t available_sequence = sequence_barrier_->WaitFor(next_sequence);
                             
-                            while (next_sequence <= avalaible_sequence) {
+                            while (next_sequence <= available_sequence) {
                                 event = ring_buffer_->Get(next_sequence);
                                 event_handler_->OnEvent(
                                     next_sequence,
-                                    next_sequence == avalaible_sequence,
+                                    next_sequence == available_sequence,
                                     event
                                 );
                                 next_sequence++;

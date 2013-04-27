@@ -829,7 +829,10 @@ OrderBook<OrderPtr>::sort_price(const OrderPtr& order)
 
 template <class OrderPtr>
 inline bool
-OrderBook<OrderPtr>::add_order(Tracker& inbound, Price order_price)
+OrderBook<OrderPtr>::add_order(
+    Tracker& inbound,
+    Price order_price
+)
 {
   bool matched = false;
   OrderPtr& order = inbound.ptr();
