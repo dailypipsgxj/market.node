@@ -4,7 +4,7 @@ project(MARKETNODE)
 
 ADD_SUBDIRECTORY(lib)
 
-if (CMAKE_COMPILER_IS_CLANG) 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(
         -std=c++11
         -stdlib=libc++
