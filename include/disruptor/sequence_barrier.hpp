@@ -1,13 +1,15 @@
-// Copyright (c) 2011, François Saint-Jacques
-// All rights reserved.
+// Copyright (c) 2011, François Saint-Jacques. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
+//
 //     * Redistributions of source code must retain the above copyright
 //       notice, this list of conditions and the following disclaimer.
+//
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
+//
 //     * Neither the name of the disruptor-- nor the
 //       names of its contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
@@ -23,67 +25,91 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef DISRUPTOR_SEQUENCE_BARRIER_H_ // NOLINT
-#define DISRUPTOR_SEQUENCE_BARRIER_H_ // NOLINT
+#pragma once
 
 #include <memory>
 #include <vector>
 
-#include "disruptor/exceptions.h"
-#include "disruptor/interface.h"
+#include "disruptor/exceptions.hpp"
+#include "disruptor/interface.hpp"
 
-namespace disruptor {
+namespace market { 
+    namespace disruptor {
 
-class ProcessingSequenceBarrier : SequenceBarrierInterface {
- public:
-    ProcessingSequenceBarrier(WaitStrategyInterface* wait_strategy,
-                              Sequence* sequence,
-                              const std::vector<Sequence*>& sequences) :
-        cursor_(sequence),
-        wait_strategy_(wait_strategy),
-        dependent_sequences_(sequences),
-        alerted_(false) {
-    }
+        class ProcessingSequenceBarrier : SequenceBarrierInterface {
+            public:
+                ProcessingSequenceBarrier(
+                    WaitStrategyInterface* wait_strategy,
+                    Sequence* sequence,
+                    const std::vector<Sequence*>& sequences
+                ) : cursor_(sequence),
+                    wait_strategy_(wait_strategy),
+                    dependent_sequences_(sequences),
+                    alerted_(false)
+                {}
 
-    virtual int64_t WaitFor(const int64_t& sequence) {
-        return wait_strategy_->WaitFor(dependent_sequences_, *cursor_, *this,
-                                       sequence);
-    }
+                virtual int64_t
+                WaitFor(
+                    const int64_t& sequence
+                )
+                {
+                    return wait_strategy_->WaitFor(
+                        dependent_sequences_,
+                        *cursor_,
+                        *this,
+                        sequence
+                    );
+                }
 
-    virtual int64_t WaitFor(const int64_t& sequence,
-                            const int64_t& timeout_micros) {
-        return wait_strategy_->WaitFor(dependent_sequences_, *cursor_, *this,
-                                       sequence, timeout_micros);
-    }
+                virtual int64_t 
+                WaitFor(
+                    const int64_t& sequence,
+                    const int64_t& timeout_micros
+                )
+                {
+                    return wait_strategy_->WaitFor(
+                        dependent_sequences_,
+                        *cursor_,
+                        *this,
+                        sequence,
+                        timeout_micros
+                    );
+                }
 
-    virtual int64_t GetCursor() const {
-        return cursor_->sequence();
-    }
+                virtual int64_t
+                GetCursor() const
+                {
+                    return cursor_->sequence();
+                }
 
-    virtual bool IsAlerted() const {
-        return alerted_.load(std::memory_order::memory_order_acquire);
-    }
+                virtual bool
+                IsAlerted() const
+                {
+                    return alerted_.load(std::memory_order::memory_order_acquire);
+                }
 
-    virtual void Alert() {
-        alerted_.store(true, std::memory_order::memory_order_release);
-    }
+                virtual void
+                Alert() {
+                    alerted_.store(true, std::memory_order::memory_order_release);
+                }
 
-    virtual void ClearAlert() {
-        alerted_.store(false, std::memory_order::memory_order_release);
-    }
+                virtual void
+                ClearAlert() {
+                    alerted_.store(false, std::memory_order::memory_order_release);
+                }
 
-    virtual void CheckAlert() const {
-        if (IsAlerted())
-            throw AlertException();
-    }
+                virtual void
+                CheckAlert() const {
+                    if (IsAlerted()) { 
+                        throw AlertException();
+                    }
+                }
 
- private:
-    WaitStrategyInterface* wait_strategy_;
-    Sequence* cursor_;
-    std::vector<Sequence*> dependent_sequences_;
-    std::atomic<bool> alerted_;
-};
-
-};  // namespace disruptor
-
-#endif // DISRUPTOR_DEPENDENCY_BARRIER_H_ NOLINT
+            private:
+                WaitStrategyInterface* wait_strategy_;
+                Sequence* cursor_;
+                std::vector<Sequence*> dependent_sequences_;
+                std::atomic<bool> alerted_;
+        };
+    } // namespace disruptor
+} // namespace market

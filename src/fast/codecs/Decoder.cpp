@@ -45,7 +45,6 @@ Decoder::Decoder(Codecs::TemplateRegistryPtr registry)
 //{
 //}
 
-
 void
 Decoder::decodeMessage(
    DataSource & source,

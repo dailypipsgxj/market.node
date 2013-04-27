@@ -33,17 +33,17 @@ using namespace QuickFAST;
 using namespace Codecs;
 
 BasePacketAssembler::BasePacketAssembler(
-      TemplateRegistryPtr templateRegistry,
-      HeaderAnalyzer & packetHeaderAnalyzer,
-      HeaderAnalyzer & messageHeaderAnalyzer,
-      Messages::ValueMessageBuilder & builder)
-  : Communication::Assembler(templateRegistry, builder)
-  , packetHeaderAnalyzer_(packetHeaderAnalyzer)
-  , messageHeaderAnalyzer_(messageHeaderAnalyzer)
-  , builder_(builder)
-  , messageCount_(0)
-  , byteCount_(0)
-  , messageLimit_(0)
+    TemplateRegistryPtr templateRegistry,
+    HeaderAnalyzer & packetHeaderAnalyzer,
+    HeaderAnalyzer & messageHeaderAnalyzer,
+    Messages::ValueMessageBuilder & builder
+) : Communication::Assembler(templateRegistry, builder), 
+    packetHeaderAnalyzer_(packetHeaderAnalyzer),
+     messageHeaderAnalyzer_(messageHeaderAnalyzer),
+    builder_(builder),
+    messageCount_(0),
+    byteCount_(0),
+    messageLimit_(0)
 {
 }
 
@@ -52,7 +52,10 @@ BasePacketAssembler::~BasePacketAssembler()
 }
 
 bool
-BasePacketAssembler::decodeBuffer(const unsigned char * buffer, size_t size)
+BasePacketAssembler::decodeBuffer(
+    const unsigned char *buffer,
+    size_t size
+)
 {
   bool result = true;
   ++messageCount_;

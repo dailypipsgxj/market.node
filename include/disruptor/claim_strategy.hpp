@@ -1,5 +1,4 @@
-// Copyright (c) 2011, François Saint-Jacques
-// All rights reserved.
+// Copyright (c) 2011, François Saint-Jacques. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -31,7 +30,7 @@
 #include <thread>
 #include <vector>
 
-#include "disruptor/interface.h"
+#include "disruptor/interface.hpp"
 
 namespace market { 
     namespace disruptor {
