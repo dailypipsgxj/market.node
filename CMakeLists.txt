@@ -19,12 +19,6 @@ add_executable(
     ${MARKETNODE_SOURCE_DIR}/src/http/gateway.cpp
 )
 
-target_link_libraries(
-    http_gateway
-    uv
-    http_parser
-)
-
 add_executable(
     design
     ${MARKETNODE_SOURCE_DIR}/src/model/order.cpp
@@ -36,5 +30,21 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
         design
         cxxrt
         c++
+    )
+
+    target_link_libraries(
+        http_gateway
+        uv
+        http_parser
+        cxxrt
+        c++
+    )
+endif()
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") 
+    target_link_libraries(
+        http_gateway
+        uv
+        http_parser
     )
 endif()
