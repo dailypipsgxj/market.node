@@ -36,7 +36,7 @@ namespace QuickFAST{
   namespace Codecs{
     class DataSource;
     /// @brief A smart pointer to a DataSource.
-    typedef boost::shared_ptr<DataSource> DataSourcePtr;
+    typedef std::shared_ptr<DataSource> DataSourcePtr;
   }
 }
 #endif // DATASOURCE_FWD_H

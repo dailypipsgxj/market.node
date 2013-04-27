@@ -39,9 +39,9 @@ namespace QuickFAST
   {
     class XMLTemplateParser;
     /// @brief A smart pointer to a XMLTemplateParser.
-    typedef boost::shared_ptr<XMLTemplateParser> XMLTemplateParserPtr;
+    typedef std::shared_ptr<XMLTemplateParser> XMLTemplateParserPtr;
     /// @brief A smart pointer to a const XMLTemplateParser.
-    typedef boost::shared_ptr<const XMLTemplateParser> XMLTemplateParserCPtr;
+    typedef std::shared_ptr<const XMLTemplateParser> XMLTemplateParserCPtr;
   }
 }
 #endif // XMLTEMPLATEPARSER_FWD_H

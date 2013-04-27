@@ -36,9 +36,9 @@ namespace QuickFAST{
   namespace Codecs{
     class Template;
     /// @brief A smart pointer to a Template.
-    typedef boost::shared_ptr<Template> TemplatePtr;
+    typedef std::shared_ptr<Template> TemplatePtr;
     /// @brief A smart pointer to a const Template.
-    typedef boost::shared_ptr<const Template> TemplateCPtr;
+    typedef std::shared_ptr<const Template> TemplateCPtr;
   }
 }
 #endif // TEMPLATE_FWD_H

@@ -33,7 +33,7 @@ namespace QuickFAST
     class PacketSequencingAssembler;
 
     ///@brief smart pointer to PacketSequencingAssembler
-    typedef boost::shared_ptr<PacketSequencingAssembler> PacketSequencingAssemblerPtr;
+    typedef std::shared_ptr<PacketSequencingAssembler> PacketSequencingAssemblerPtr;
   }
 }
 #endif // PACKETSEQUENCINGASSEMBLER_FWD_H

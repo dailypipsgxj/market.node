@@ -4,8 +4,8 @@ Market.Boost
 An open source financial exchange toolkit from [Furosys Solutions](http://www.furosys.com/).
 
 ## Goals
-* Facilitate rapid development of high-performance, scalable exchanges.
-* Provide FAST 1.2, FIX 5.0, and JSON-over-HTTP reference gateways.
+* Facilitate rapid development and deployment of high-performance, scalable exchanges.
+* Provide FAST1.2, FIX5.0SP2/FIXT1.1, and JSON-RPC reference gateways.
 
 ## Build Dependencies
 * Clang 3.2+ and a recent build of libc++
@@ -34,4 +34,4 @@ Without their hard work, this project would not be possible.
 
 ## Donate
 
-Send bitcoins to 1EMqiyr8twB8v13aeqhfLp95EDkhAvVs4H to show your support!
+Send bitcoins to 1EMqiyr8twB8v13aeqhfLp95EDkhAvVs4H to support this project.

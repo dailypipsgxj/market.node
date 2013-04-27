@@ -34,9 +34,9 @@ namespace QuickFAST{
     /// @brief An implementation for the &lt;exponent> field instruction within a &lt;decimal>.
     typedef FieldInstructionInteger</*exponent_t*/int32, ValueType::EXPONENT, true> FieldInstructionExponent;
     /// @brief a pointer to a FieldInstrucionExponent
-    typedef boost::shared_ptr<FieldInstructionExponent> FieldInstructionExponentPtr;
+    typedef std::shared_ptr<FieldInstructionExponent> FieldInstructionExponentPtr;
     /// @brief a const pointer to a FieldInstrucionExponent
-    typedef boost::shared_ptr<const FieldInstructionExponent> FieldInstructionExponentCPtr;
+    typedef std::shared_ptr<const FieldInstructionExponent> FieldInstructionExponentCPtr;
   }
 }
 #endif // FIELDINSTRUCTIONEXPONENT_H

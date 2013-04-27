@@ -36,9 +36,9 @@ namespace QuickFAST{
   namespace Codecs{
     class Decoder;
     /// @brief A smart pointer to a Decoder.
-//    typedef boost::shared_ptr<Decoder> DecoderPtr;
+//    typedef std::shared_ptr<Decoder> DecoderPtr;
     /// @brief A smart pointer to a const Decoder.
-//    typedef boost::shared_ptr<const Decoder> DecoderCPtr;
+//    typedef std::shared_ptr<const Decoder> DecoderCPtr;
   }
 }
 #endif // DECODER_FWD_H

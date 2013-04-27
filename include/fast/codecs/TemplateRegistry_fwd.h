@@ -35,9 +35,9 @@ namespace QuickFAST{
   namespace Codecs{
     class TemplateRegistry;
     /// @brief A smart pointer to a TemplateRegistry.
-    typedef boost::shared_ptr<TemplateRegistry> TemplateRegistryPtr;
+    typedef std::shared_ptr<TemplateRegistry> TemplateRegistryPtr;
     /// @brief A smart pointer to a const TemplateRegistry.
-    typedef boost::shared_ptr<const TemplateRegistry> TemplateRegistryCPtr;
+    typedef std::shared_ptr<const TemplateRegistry> TemplateRegistryCPtr;
   }
 }
 #endif // TEMPLATEREGISTRY_FWD_H

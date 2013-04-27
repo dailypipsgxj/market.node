@@ -36,9 +36,9 @@ namespace QuickFAST{
   namespace Codecs{
     class FieldOp;
     /// @brief A smart pointer to a FieldOp
-    typedef boost::shared_ptr<FieldOp> FieldOpPtr;
+    typedef std::shared_ptr<FieldOp> FieldOpPtr;
     /// @brief A smart pointer to a const FieldOp
-    typedef boost::shared_ptr<const FieldOp> FieldOpCPtr;
+    typedef std::shared_ptr<const FieldOp> FieldOpCPtr;
   }
 }
 #endif // FIELDOP_FWD_H

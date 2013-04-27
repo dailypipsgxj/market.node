@@ -36,7 +36,7 @@ namespace QuickFAST{
   namespace Codecs{
     class Encoder;
     /// @brief A smart pointer to a Encoder.
-    typedef boost::shared_ptr<Encoder> EncoderPtr;
+    typedef std::shared_ptr<Encoder> EncoderPtr;
   }
 }
 #endif // ENCODER_FWD_H

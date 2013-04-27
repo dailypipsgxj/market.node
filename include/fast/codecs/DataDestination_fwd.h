@@ -36,11 +36,11 @@ namespace QuickFAST{
   namespace Codecs{
     class DestinationBuffer;
     /// @brief A smart pointer to a DestinationBuffer.
-    typedef boost::shared_ptr<DestinationBuffer> DestinationBufferPtr;
+    typedef std::shared_ptr<DestinationBuffer> DestinationBufferPtr;
 
     class DataDestination;
     /// @brief A smart pointer to a DataDestination.
-    typedef boost::shared_ptr<DataDestination> DataDestinationPtr;
+    typedef std::shared_ptr<DataDestination> DataDestinationPtr;
   }
 }
 #endif // DATADESTINATION_FWD_H

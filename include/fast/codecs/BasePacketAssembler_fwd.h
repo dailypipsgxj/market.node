@@ -33,7 +33,7 @@ namespace QuickFAST
     class BasePacketAssembler;
 
     ///@brief smart pointer to BasePacketAssembler
-    typedef boost::shared_ptr<BasePacketAssembler> BasePacketAssemblerPtr;
+    typedef std::shared_ptr<BasePacketAssembler> BasePacketAssemblerPtr;
   }
 }
 #endif // BASEPACKETASSEMBLER_FWD_H
