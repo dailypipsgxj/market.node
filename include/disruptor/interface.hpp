@@ -206,7 +206,8 @@ namespace market {
                 // @return the resulting event after it has been translated.
                 virtual T*
                 TranslateTo(
-                    const int64_t& sequence, T* event
+                    const int64_t& sequence,
+                    T* event
                 ) = 0;
         };
 

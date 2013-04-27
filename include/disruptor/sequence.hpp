@@ -91,67 +91,85 @@ namespace market {
 
                 DISALLOW_COPY_AND_ASSIGN(Sequence);
         };
-    }
-}
 
-// Cache line padded sequence counter.
-//
-// Can be used across threads without worrying about false sharing if a
-// located adjacent to another counter in memory.
-class PaddedSequence : public Sequence {
- public:
-    PaddedSequence(
-        int64_t initial_value = kInitialCursorValue
-    ) : Sequence(initial_value) {}
+        // Cache line padded sequence counter.
+        //
+        // Can be used across threads without worrying about false sharing if a
+        // located adjacent to another counter in memory.
+        class PaddedSequence : public Sequence {
+            public:
+                PaddedSequence(
+                    int64_t initial_value = kInitialCursorValue
+                ) : Sequence(initial_value) {}
 
- private:
-    // padding
-    int64_t padding_[ATOMIC_SEQUENCE_PADDING_LENGTH];
+            private:
+                // padding
+                int64_t padding_[ATOMIC_SEQUENCE_PADDING_LENGTH];
 
-    DISALLOW_COPY_AND_ASSIGN(PaddedSequence);
-};
+                DISALLOW_COPY_AND_ASSIGN(PaddedSequence);
+        };
 
-// Non-atomic sequence counter.
-//
-// This counter is not thread safe.
-class MutableLong {
- public:
-     MutableLong(
-        int64_t initial_value = kInitialCursorValue
-    ) : sequence_(initial_value)
-    {}
+        // Non-atomic sequence counter.
+        //
+        // This counter is not thread safe.
+        class MutableLong {
+            public:
+                MutableLong(
+                    int64_t initial_value = kInitialCursorValue
+                ) : sequence_(initial_value)
+                {}
 
-     int64_t sequence() const { return sequence_; }
+                int64_t
+                sequence() const
+                {
+                    return sequence_;
+                }
 
-     void set_sequence(const int64_t& sequence) { sequence_ = sequence; };
+                void
+                set_sequence(
+                    const int64_t& sequence
+                )
+                {
+                    sequence_ = sequence;
+                };
 
-     int64_t IncrementAndGet(const int64_t& delta) { sequence_ += delta; return sequence_; }
+                int64_t
+                IncrementAndGet(
+                    const int64_t& delta
+                )
+                {
+                    sequence_ += delta; return sequence_;
+                }
 
- private:
-     volatile int64_t sequence_;
-};
+            private:
+                volatile int64_t sequence_;
+        };
 
-// Cache line padded non-atomic sequence counter.
-//
-// This counter is not thread safe.
-class PaddedLong : public MutableLong {
- public:
-     PaddedLong(int64_t initial_value = kInitialCursorValue) :
-         MutableLong(initial_value) {}
- private:
-     int64_t padding_[SEQUENCE_PADDING_LENGTH];
-};
+        // Cache line padded non-atomic sequence counter.
+        //
+        // This counter is not thread safe.
+        class PaddedLong : public MutableLong {
+            public:
+                PaddedLong(
+                    int64_t initial_value = kInitialCursorValue
+                ) : MutableLong(initial_value) {}
+            private:
+                int64_t padding_[SEQUENCE_PADDING_LENGTH];
+        };
 
-int64_t GetMinimumSequence(
-        const std::vector<Sequence*>& sequences) {
-        int64_t minimum = LONG_MAX;
+        int64_t
+        GetMinimumSequence(
+            const std::vector<Sequence*>& sequences
+        )
+        {
+            int64_t minimum = LONG_MAX;
 
-        for (Sequence* sequence_: sequences) {
-            int64_t sequence = sequence_->sequence();
-            minimum = minimum < sequence ? minimum : sequence;
-        }
+            for (Sequence* sequence_: sequences) {
+                int64_t sequence = sequence_->sequence();
+                minimum = minimum < sequence ? minimum : sequence;
+            }
 
-        return minimum;
-};
-
-};  // namespace disruptor
+            return minimum;
+        };
+    } // namespace disruptor
+} // namespace market

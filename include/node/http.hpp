@@ -31,14 +31,14 @@
 #include "http_parser.h"
 
 namespace market { 
-    namespace native {
+    namespace node {
 	    namespace http {
 
 		    class url_parse_exception : public market::node::exception {
 		        public:
 			        url_parse_exception(
                         const std::string& message="Failed to parse URL."
-                    ) : native::exception(message)
+                    ) : market::node::exception(message)
 			        {}
 		    };
 
@@ -46,7 +46,7 @@ namespace market {
 		        public:
 			        response_exception(
                         const std::string& message="HTTP response error."
-                    ) : native::exception(message)
+                    ) : market::node::exception(message)
 			        {}
 		    };
 
@@ -157,6 +157,7 @@ namespace market {
 				            return std::string();
 			            }
                     }
+
 		        private:
 			        void from_buf(
                         const char* buf,
@@ -342,7 +343,7 @@ namespace market {
 		            private:
                         http_client_ptr client_;
                         market::node::net::tcp* socket_;
-                        std::map<std::string, std::string, native::text::ci_less> headers_;
+                        std::map<std::string, std::string, market::node::text::ci_less> headers_;
                         int status_;
                 };
 
@@ -357,259 +358,281 @@ namespace market {
 				            //printf("~request() %x\n", this);
                         }
 
-		public:
-			const url_obj& url() const { return url_; }
+            		public:
+			            const url_obj& url() const { return url_; }
 
-			const std::string& get_header(const std::string& key) const
-			{
-				auto it = headers_.find(key);
-				if(it != headers_.end()) return it->second;
-				return default_value;
-			}
+			            const std::string&
+                        get_header(
+                            const std::string& key
+                        ) const
+			            {
+				            auto it = headers_.find(key);
+				            if(it != headers_.end()) { 
+                                return it->second;
+                            }
+				            return default_value;
+			            }
 
-			bool get_header(const std::string& key, std::string& value) const
-			{
-				auto it = headers_.find(key);
-				if(it != headers_.end())
-				{
-					value = it->second;
-					return true;
-				}
-				return false;
-			}
+			            bool
+                        get_header(
+                            const std::string& key,
+                            std::string& value
+                        ) const
+                        {
+                            auto it = headers_.find(key);
+                            if(it != headers_.end()) {
+                                value = it->second;
+                                return true;
+                            }
+                            return false;
+			            }
 
-		private:
-            const std::string& default_value=std::string();
-			url_obj url_;
-			std::map<std::string, std::string, native::text::ci_less> headers_;
-		};
+                private:
+                    const std::string& default_value=std::string();
+			        url_obj url_;
+			        std::map<std::string, std::string, market::node::text::ci_less> headers_;
+		    };
 
-		class client_context
-		{
-			friend class http;
+            class client_context {
+			    friend class http;
 
-		private:
-			client_context(native::net::tcp* server)
-				: parser_()
-				, parser_settings_()
-				, was_header_value_(true)
-				, last_header_field_()
-				, last_header_value_()
-				, socket_(nullptr)
-				, request_(nullptr)
-				, response_(nullptr)
-				, callback_lut_(new callbacks(1))
-			{
-				//printf("request() %x callback_=%x\n", this, callback_);
-				assert(server);
+                private:
+			        client_context(
+                        market::node::net::tcp* server
+                    ) : parser_(),
+                        parser_settings_(),
+                        was_header_value_(true),
+                        last_header_field_(),
+                        last_header_value_(),
+                        socket_(nullptr),
+                        request_(nullptr),
+                        response_(nullptr),
+                        callback_lut_(new callbacks(1))
+                    {
+                        //printf("request() %x callback_=%x\n", this, callback_);
+                        assert(server);
 
-				// TODO: check error
-				socket_ = new native::net::tcp;
-				server->accept(socket_);
-			}
+                        // TODO: check error
+                        socket_ = new market::node::net::tcp;
+                        server->accept(socket_);
+                    }
 
-		public:
-			~client_context()
-			{
-				if(request_)
-				{
-					delete request_;
-					request_ = nullptr;
-				}
+                public:
+                    ~client_context()
+                    {
+                        if(request_) {
+                            delete request_;
+                            request_ = nullptr;
+                        }
 
-				if(response_)
-				{
-					delete response_;
-					response_ = nullptr;
-				}
+                        if(response_) {
+                            delete response_;
+                            response_ = nullptr;
+                        }
 
-				if(callback_lut_)
-				{
-					delete callback_lut_;
-					callback_lut_ = nullptr;
-				}
+                        if(callback_lut_) {
+                            delete callback_lut_;
+                            callback_lut_ = nullptr;
+                        }
 
-				if(socket_)
-				{
-					// TODO: maybe close() does not affect socket_ pointer itself. So, delete socket_ does not have to be inside the callback.
-					socket_->close([=](){
-						delete socket_;
-						socket_ = nullptr;
-					});
-				}
-			}
+                        if(socket_) {
+                            // TODO: maybe close() does not affect socket_ pointer itself. So, delete socket_ does not have to be inside the callback.
+                            socket_->close([=](){
+                                delete socket_;
+                                socket_ = nullptr;
+                            });
+                        }
+                    }
 
-		private:
-			bool parse(std::function<void(request&, response&)> callback)
-			{
-				request_ = new request;
-				response_ = new response(this, socket_);
+                private:
+                    bool parse(
+                        std::function<void(request&, response&)> callback
+                    )
+                    {
+                        request_ = new request;
+                        response_ = new response(this, socket_);
 
-				http_parser_init(&parser_, HTTP_REQUEST);
-				parser_.data = this;
+                        http_parser_init(&parser_, HTTP_REQUEST);
+                        parser_.data = this;
 
-				// store callback object
-				callbacks::store(callback_lut_, 0, callback);
+                        // store callback object
+                        callbacks::store(callback_lut_, 0, callback);
 
-				parser_settings_.on_url = [](http_parser* parser, const char *at, size_t len) {
-					auto client = reinterpret_cast<client_context*>(parser->data);
+                        parser_settings_.on_url = [](http_parser* parser, const char *at, size_t len) {
+                            auto client = reinterpret_cast<client_context*>(parser->data);
 
-					//  TODO: from_buf() can throw an exception: check
-					client->request_->url_.from_buf(at, len);
+                            //  TODO: from_buf() can throw an exception: check
+                            client->request_->url_.from_buf(at, len);
+                            return 0;
+                        };
 
-					return 0;
-				};
-				parser_settings_.on_header_field = [](http_parser* parser, const char* at, size_t len) {
-					auto client = reinterpret_cast<client_context*>(parser->data);
+                        parser_settings_.on_header_field = [](http_parser* parser, const char* at, size_t len) {
+                            auto client = reinterpret_cast<client_context*>(parser->data);
 
-					if(client->was_header_value_)
-					{
-						// new field started
-						if(!client->last_header_field_.empty())
-						{
-							// add new entry
-							client->request_->headers_[client->last_header_field_] = client->last_header_value_;
-							client->last_header_value_.clear();
-						}
+                            if(client->was_header_value_) {
+                                // new field started
+                                if(!client->last_header_field_.empty()) {
+                                    // add new entry
+                                    client->request_->headers_[client->last_header_field_] = client->last_header_value_;
+                                    client->last_header_value_.clear();
+                                }
 
-						client->last_header_field_ = std::string(at, len);
-						client->was_header_value_ = false;
-					}
-					else
-					{
-						// appending
-						client->last_header_field_ += std::string(at, len);
-					}
-					return 0;
-				};
-				parser_settings_.on_header_value = [](http_parser* parser, const char* at, size_t len) {
-					auto client = reinterpret_cast<client_context*>(parser->data);
+                                client->last_header_field_ = std::string(at, len);
+                                client->was_header_value_ = false;
+                            } else {
+                                // appending
+                                client->last_header_field_ += std::string(at, len);
+                            }
+                            return 0;
+                        };
 
-					if(!client->was_header_value_)
-					{
-						client->last_header_value_ = std::string(at, len);
-						client->was_header_value_ = true;
-					}
-					else
-					{
-						// appending
-						client->last_header_value_ += std::string(at, len);
-					}
-					return 0;
-				};
-				parser_settings_.on_headers_complete = [](http_parser* parser) {
-					auto client = reinterpret_cast<client_context*>(parser->data);
+                        parser_settings_.on_header_value = [](http_parser* parser, const char* at, size_t len) {
+                            auto client = reinterpret_cast<client_context*>(parser->data);
 
-					// add last entry if any
-					if(!client->last_header_field_.empty())
-					{
-						// add new entry
-						client->request_->headers_[client->last_header_field_] = client->last_header_value_;
-					}
+                            if(!client->was_header_value_) {
+                                client->last_header_value_ = std::string(at, len);
+                                client->was_header_value_ = true;
+                            } else {
+                                // appending
+                                client->last_header_value_ += std::string(at, len);
+                            }
+                            return 0;
+                        };
 
-					//return 0;
-					return 1; // do not parse body
-				};
-				parser_settings_.on_message_complete = [](http_parser* parser) {
-					auto client = reinterpret_cast<client_context*>(parser->data);
-					// invoke stored callback object
-					callbacks::invoke<decltype(callback)>(client->callback_lut_, 0, *client->request_, *client->response_);
-					return 0;
-				};
+                        parser_settings_.on_headers_complete = [](http_parser* parser) {
+                            auto client = reinterpret_cast<client_context*>(parser->data);
 
-				socket_->read_start([=](const char* buf, int len){
-					http_parser_execute(&parser_, &parser_settings_, buf, len);
-				});
+                            // add last entry if any
+                            if(!client->last_header_field_.empty()) {
+                                // add new entry
+                                client->request_->headers_[client->last_header_field_] = client->last_header_value_;
+                            }
 
-				return true;
-			}
+                            //return 0;
+                            return 1; // do not parse body
+                        };
 
-		private:
-			http_parser parser_;
-			http_parser_settings parser_settings_;
-			bool was_header_value_;
-			std::string last_header_field_;
-			std::string last_header_value_;
+                        parser_settings_.on_message_complete = [](http_parser* parser) {
+                            auto client = reinterpret_cast<client_context*>(parser->data);
+                            // invoke stored callback object
+                            callbacks::invoke<decltype(callback)>(
+                                client->callback_lut_,
+                                0,
+                                *client->request_,
+                                *client->response_
+                            );
+                            return 0;
+                        };
 
-			native::net::tcp* socket_;
-			request* request_;
-			response* response_;
+                        socket_->read_start([=](const char* buf, int len){
+                            http_parser_execute(&parser_, &parser_settings_, buf, len);
+                        });
 
-			callbacks* callback_lut_;
-		};
+                        return true;
+                    }
 
-		class http
-		{
-		public:
-			http()
-				: socket_(new native::net::tcp)
-			{
-			}
+                private:
+                    http_parser parser_;
+                    http_parser_settings parser_settings_;
+                    bool was_header_value_;
+                    std::string last_header_field_;
+                    std::string last_header_value_;
 
-			virtual ~http()
-			{
-				if(socket_)
-				{
-					socket_->close([](){});
-				}
-			}
+                    market::node::net::tcp* socket_;
+                    request* request_;
+                    response* response_;
 
-		public:
-			static std::shared_ptr<http> create_server(const std::string& ip, int port, std::function<void(request&, response&)> callback)
-			{
-			    auto server = std::shared_ptr<http>(new http);
-			    if(server->listen(ip, port, callback)) return server;
-			    return nullptr;
-			}
+                    callbacks* callback_lut_;
+            };
 
-			bool listen(const std::string& ip, int port, std::function<void(request&, response&)> callback)
-			{
-				if(!socket_->bind(ip, port)) return false;
+            class http {
+                public:
+                    http() : socket_(new market::node::net::tcp) {}
 
-				if(!socket_->listen([=](error e) {
-				    if(e)
-				    {
-				        // TODO: handle client connection error
-				    }
-				    else
-				    {
-                        auto client = new client_context(socket_.get());
-                        client->parse(callback);
-				    }
-				})) return false;
+                    virtual ~http() {
+                        if(socket_) {
+                            socket_->close([](){});
+                        }
+                    }
 
-				return true;
-			}
-			void close()
-			{
-			  if(socket_.get())
-			    {
-			      socket_->close([]{});
-			      socket_.reset();
-			    }
-			}
+                public:
+                    static std::shared_ptr<http>
+                    create_server(
+                        const std::string& ip,
+                        int port,
+                        std::function<void(request&, response&)> callback
+                    )
+                    {
+                        auto server = std::shared_ptr<http>(new http);
+                        if(server->listen(ip, port, callback)) {
+                            return server;
+                        }
+                        return nullptr;
+                    }
 
-		private:
-			std::shared_ptr<native::net::tcp> socket_;
-		};
+                    bool listen(
+                        const std::string& ip,
+                        int port,
+                        std::function<void(request&, response&)> callback
+                    )
+                    {
+                        if(!socket_->bind(ip, port)) {
+                            return false;
+                        }
 
-		typedef http_method method;
-		typedef http_parser_url_fields url_fields;
-		typedef http_errno error;
+                        if(!socket_->listen([=](error e) {
+                            if(e) {
+                                // TODO: handle client connection error
+                            } else {
+                                auto client = new client_context(socket_.get());
+                                client->parse(callback);
+                            }
+                        }))  return false;
 
-		inline const char* get_error_name(error err)
-		{
-			return http_errno_name(err);
-		}
+				        return true;
+			        }
 
-		inline const char* get_error_description(error err)
-		{
-			return http_errno_description(err);
-		}
+                    void
+                    close()
+                    {
+                        if(socket_.get()) {
+                            socket_->close([]{});
+                            socket_.reset();
+                        }
+                    }
 
-		inline const char* get_method_name(method m)
-		{
-			return http_method_str(m);
-		}
-	}
-}
+                private:
+                    std::shared_ptr<market::node::net::tcp> socket_;
+            };
+
+            typedef http_method method;
+            typedef http_parser_url_fields url_fields;
+            typedef http_errno error;
+
+            inline const char*
+            get_error_name(
+                error err
+            )
+            {
+                return http_errno_name(err);
+            }
+
+            inline const char*
+            get_error_description(
+                error err
+            )
+            {
+                return http_errno_description(err);
+            }
+
+            inline const char*
+            get_method_name(
+                method m
+            )
+            {
+                return http_method_str(m);
+            }
+
+        } // namespace http
+	} // namespace node
+} // namespace market

@@ -73,7 +73,7 @@ namespace market {
                 }
 
                 virtual bool
-                HasAvalaibleCapacity(
+                HasAvailableCapacity(
                     const std::vector<Sequence*>& dependent_sequences
                 )
                 {
@@ -130,6 +130,7 @@ namespace market {
                 DISALLOW_COPY_AND_ASSIGN(SingleThreadedStrategy);
         };
 
+/*
         // Strategy to be used when there are multiple publisher threads claiming
         // {@link AbstractEvent}s.
         class MultiThreadedStrategy :  public ClaimStrategyInterface {
@@ -269,13 +270,14 @@ namespace market {
                 }
 
                 const int buffer_size_;
-                PaddedSequence sequence_;
-                thread_local PaddedLong min_gating_sequence_local_;
+                market::disruptor::PaddedSequence sequence_;
+                thread_local market::disruptor::PaddedLong min_gating_sequence_local_;
 
                 const int retries = 100;
 
                 DISALLOW_COPY_AND_ASSIGN(MultiThreadedStrategy);
         };
+*/
 
         ClaimStrategyInterface* CreateClaimStrategy(
             ClaimStrategyOption option,
@@ -285,8 +287,8 @@ namespace market {
             switch (option) {
                 case kSingleThreadedStrategy:
                     return new SingleThreadedStrategy(buffer_size);
-                case kMultiThreadedStrategy:
-                    return new MultiThreadedStrategy(buffer_size);
+//                case kMultiThreadedStrategy:
+//                    return new MultiThreadedStrategy(buffer_size);
                 default:
                     return NULL;
             }

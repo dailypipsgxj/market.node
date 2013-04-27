@@ -9,19 +9,25 @@ add_definitions(-std=c++11 -stdlib=libc++ -g -O0 -D_LARGEFILE_SOURCE -D_FILE_OFF
 set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -stdlib=libc++")
 
 include_directories(
-    ${MARKETBOOST_SOURCE_DIR}/include
+    ${MARKETNODE_SOURCE_DIR}/include
     ${uv_SOURCE_DIR}/include
     ${http_parser_SOURCE_DIR}
 )
 
 add_executable(
     http_gateway
-    ${MARKETBOOST_SOURCE_DIR}/src/http/gateway.cpp
+    ${MARKETNODE_SOURCE_DIR}/src/http/gateway.cpp
 )
 
 target_link_libraries(
     http_gateway
     uv
     http_parser
+)
+
+add_executable(
+    design
+    ${MARKETNODE_SOURCE_DIR}/src/model/order.cpp
+    ${MARKETNODE_SOURCE_DIR}/test/design.cpp
 )
 

@@ -167,7 +167,7 @@ namespace market {
                 const std::string& path,
                 int flags,
                 int mode,
-                std::function<void(native::fs::file_handle fd, error e)> callback
+                std::function<void(market::node::fs::file_handle fd, error e)> callback
             )
             {
                 auto req = internal::create_req(callback);

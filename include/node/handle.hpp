@@ -24,7 +24,7 @@
 #include "base.hpp"
 #include "callback.hpp"
 
-namespace market
+namespace market { 
     namespace node {
 	    namespace base {
 		    class handle;
@@ -41,7 +41,7 @@ namespace market
 				        //printf("handle(): %x\n", this);
 				        assert(uv_handle_);
 
-				        uv_handle_->data = new callbacks(native::internal::uv_cid_max);
+				        uv_handle_->data = new market::node::callbacks(market::node::internal::uv_cid_max);
 				        assert(uv_handle_->data);
 			        }
 
@@ -92,7 +92,7 @@ namespace market
 				        uv_close(
                             get(),
 					        [](uv_handle_t* h) {
-						        callbacks::invoke<decltype(callback)>(h->data, native::internal::uv_cid_close);
+						        callbacks::invoke<decltype(callback)>(h->data, market::node::internal::uv_cid_close);
 						        _delete_handle(h);
 					        }
                         );

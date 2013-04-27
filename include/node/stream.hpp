@@ -42,7 +42,7 @@ namespace market {
 
                     bool
                     listen(
-                        std::function<void(native::error)> callback,
+                        std::function<void(market::node::error)> callback,
                         int backlog=128
                     )
 			        {
@@ -162,7 +162,7 @@ namespace market {
                             [](uv_write_t* req, int status) {
                                 callbacks::invoke<decltype(callback)>(
                                     req->handle->data,
-                                    native::internal::uv_cid_write,
+                                    market::node::internal::uv_cid_write,
                                     status ? uv_last_error(req->handle->loop) : error()
                                 );
                                 delete req;
@@ -230,7 +230,7 @@ namespace market {
                             [](uv_write_t* req, int status) {
                                 callbacks::invoke<decltype(callback)>(
                                     req->handle->data,
-                                    native::internal::uv_cid_write,
+                                    market::node::internal::uv_cid_write,
                                     status ? uv_last_error(req->handle->loop) : error()
                                 );
                                 delete req;

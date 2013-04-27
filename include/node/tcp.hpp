@@ -30,7 +30,7 @@
 namespace market { 
     namespace node {
         namespace net {
-            class tcp : public native::base::stream {
+            class tcp : public market::node::base::stream {
                 public:
                     template<typename X>
                     tcp(
@@ -45,8 +45,8 @@ namespace market {
                     }
 
                     tcp(
-                        native::loop& l
-                    ) : native::base::stream(new uv_tcp_t)
+                        market::node::loop& l
+                    ) : market::node::base::stream(new uv_tcp_t)
                     {
                         uv_tcp_init(l.get(), get<uv_tcp_t>());
                     }

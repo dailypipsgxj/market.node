@@ -33,6 +33,7 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <condition_variable>
 
 #include "disruptor/exceptions.hpp"
 #include "disruptor/interface.hpp"
