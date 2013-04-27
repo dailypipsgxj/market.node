@@ -16,19 +16,22 @@ namespace market {
 
         class Order {
             public:
-                Order(
+                Order();
+
+                void initialize(
                     bool is_buy,
                     market::book::Price price,
                     market::book::Quantity qty
                 );
-
-                Order();
 
                 /// @brief get the order's state
                 const OrderState& state() const;
 
                 /// @brief is this order a buy?
                 virtual bool is_buy() const;
+
+                /// @brief is this a limit order?
+                virtual bool is_limit() const;
 
                 /// @brief get the limit price of this order
                 virtual market::book::Price price() const;
@@ -76,10 +79,9 @@ namespace market {
                 book::Quantity order_qty_;
                 book::Quantity filled_qty_;
                 book::Cost filled_cost_;
-                static uint32_t last_order_id_;
 
             public:
-                const uint32_t order_id_;
+                const int64_t order_id_; // Just a sequence number!
 
         };
     } // namespace model

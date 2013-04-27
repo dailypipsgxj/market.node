@@ -61,5 +61,3 @@ namespace market {
         };
     } // namespace disruptor
 } // namespace market
-
-} // namespace disruptor

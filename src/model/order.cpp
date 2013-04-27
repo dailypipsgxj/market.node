@@ -6,26 +6,26 @@ namespace market {
     namespace model { 
 
         Order::Order(
+        ) : state_(os_new),
+            is_buy_(0),
+            price_(0),
+            order_qty_(0),   
+            filled_qty_(0),
+            filled_cost_(0),
+            order_id_(0) 
+        {
+        }
+
+        void Order::initialize(
             bool is_buy,
             book::Price price,
             book::Quantity qty
-        ) : state_(os_new),
-            is_buy_(is_buy),
-            price_(price),
-            order_qty_(qty),
-            filled_qty_(0),
-            filled_cost_(0),
-            order_id_(0) //(++last_order_id_)
-        {}
-
-        Order::Order() : state_(os_new),
-                         is_buy_(0),
-                         price_(0),
-                         order_qty_(0),
-                         filled_qty_(0),
-                         filled_cost_(0),
-                         order_id_(0)
-        {}
+        ) 
+        {
+            is_buy_    = is_buy;
+            price_     = price;
+            order_qty_ = qty;            
+        }
 
         const OrderState&
         Order::state() const
@@ -37,6 +37,12 @@ namespace market {
         Order::is_buy() const
         { 
             return is_buy_;
+        }
+
+        bool
+        Order::is_limit() const
+        {
+            return (price_ == 0);
         }
 
         market::book::Price

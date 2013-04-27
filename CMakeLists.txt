@@ -43,6 +43,8 @@ add_executable(
 
 add_executable(
     design
+    ${MARKETNODE_SOURCE_DIR}/src/book/types.cpp
+    ${MARKETNODE_SOURCE_DIR}/src/book/depth_level.cpp
     ${MARKETNODE_SOURCE_DIR}/src/model/order.cpp
     ${MARKETNODE_SOURCE_DIR}/test/design.cpp
 )
