@@ -10,8 +10,6 @@ An open source financial exchange toolkit from [Furosys Solutions](http://www.fu
 ## Build Dependencies
 * Clang 3.2+ and a recent build of libc++
 * [CMake](http://www.cmake.org) 2.8.x for easy cross-platform compilation.
-* [Boost](http://www.boost.org) 1.53 for asynchronous I/O, among other things.
-* [MySQL Connector/C++](http://dev.mysql.com/downloads/connector/cpp/) for database connectivity.
 
 ## Supported Platforms
 Development is done on MacOS X Mountain Lion with FreeBSD 10 as the primary deployment target.
