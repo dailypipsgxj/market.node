@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(MARKETBOOST)
+project(MARKETNODE)
 
 ADD_SUBDIRECTORY(lib)
 
