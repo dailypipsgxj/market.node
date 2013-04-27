@@ -1,4 +1,4 @@
-Market.Boost
+Market.Node
 ============
 
 An open source financial exchange toolkit from [Furosys Solutions](http://www.furosys.com/).
@@ -9,7 +9,7 @@ An open source financial exchange toolkit from [Furosys Solutions](http://www.fu
 
 ## Build Dependencies
 * Clang 3.2+ and a recent build of libc++
-* [CMake](http://www.cmake.org) 2.8.x for easy cross-platform compilation.
+* [CMake](http://www.cmake.org) 2.8.x
 
 ## Supported Platforms
 Development is done on MacOS X Mountain Lion with FreeBSD 10 as the primary deployment target.
