@@ -35,5 +35,6 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
     target_link_libraries( 
         design
         cxxrt
+        c++
     )
 endif()
