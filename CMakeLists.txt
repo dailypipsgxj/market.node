@@ -31,3 +31,9 @@ add_executable(
     ${MARKETNODE_SOURCE_DIR}/test/design.cpp
 )
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")  
+    target_link_libraries( 
+        design
+        cxxrt
+    )
+endif()
