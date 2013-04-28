@@ -29,6 +29,12 @@ Out-of-tree builds are recommended.
 
 ## Credits
 
+Market.Node incorporates several high quality 3rd part components:
+
+* [libuv](https://github.com/joyent/libuv)
+* [http-parser](https://github.com/joyent/http-parser)  
+* [node.native](https://github.com/d5/node.native)
+* [disruptor--](https://github.com/fsaintjacques/disruptor--)
 
 In particular, enormous thanks to [Object Computing, Inc.](http://www.ociweb.com/) for their excellent, liberally licensed libraries:
 
@@ -36,8 +42,8 @@ In particular, enormous thanks to [Object Computing, Inc.](http://www.ociweb.com
 * [QuickFIX](http://www.quickfixengine.org/): a FIX message parser. 
 * [QuickFAST](https://code.google.com/p/quickfast/): a FAST message parser.
 
-Without their hard work, this project would not be possible. 
+Without these projects, this would not be possible. 
 
 ## Donate
 
-Send bitcoins to 1EMqiyr8twB8v13aeqhfLp95EDkhAvVs4H to support this project.
+Send bitcoins to 1EMqiyr8twB8v13aeqhfLp95EDkhAvVs4H to show your support!
