@@ -66,48 +66,6 @@ class OrderBatchHandler : public market::disruptor::EventHandlerInterface<market
         void OnShutdown() {}
 };
 
-#if 0 
-int run_test(market::model::OrderBook<5>& order_book, market::model::Order** orders, clock_t end) {
-    int count = 0;
-    market::model::Order** pp_order = orders;
-    do {
-        order_book.add(*pp_order);
-        order_book.perform_callbacks();
-        ++pp_order;
-        if (*pp_order == NULL) {
-            return -1;
-        }
-        ++count;
-    } while (clock() < end);
-    return (pp_order - orders);
-}
-
-bool build_and_run_test(uint32_t dur_sec, uint32_t num_to_try) {
-  clock_t start = clock();
-  clock_t stop = start + (dur_sec * CLOCKS_PER_SEC);
-
-  int count = run_test(order_book, orders, stop);
-  for (uint32_t i = 0; i <= num_to_try; ++i) {
-    delete orders[i];
-  }
-  delete [] orders;
-  if (count > 0) {
-    std::cout << " - complete!" << std::endl;
-    std::cout << "Inserted " << count << " orders in " << dur_sec << " seconds"
-              << ", or " << count / dur_sec << " insertions per sec"
-              << std::endl;
-    uint32_t remain = order_book.bids().size() + order_book.asks().size();
-    std::cout << "Run matched " << count - remain << " orders" << std::endl;
-    return true;
-  } else {
-    std::cout << " - not enough orders" << std::endl;
-    return false;
-  }
-
-  return count > 0;
-}
-#endif 
-
 int main(int argc, char *argv[]) {
     int buffer_size = 1024 * 16;
     long iterations = 1000L * 1000L * 300;
@@ -124,14 +82,21 @@ int main(int argc, char *argv[]) {
 
     OrderBatchHandler order_handler;
     market::disruptor::IgnoreExceptionHandler<market::model::Order> order_exception_handler;
-    market::model::OrderBook<5> processor(
+    market::model::OrderBook processor(
         input_buffer,
         (market::disruptor::SequenceBarrierInterface*) barrier.get(),
         &order_handler,
         &order_exception_handler
     );
 
-    std::thread consumer(std::ref<market::model::OrderBook<5>>(processor));
+    std::thread consumer(std::ref<market::model::OrderBook>(processor));
+
+    // TODO: Handle CPU affinity for the consumer thread.
+    #ifdef __APPLE__
+        std::cout << "Running on MacOS X" << std::endl;    
+    #elif __FreeBSD__
+        std::cout << "Running on FreeBSD" << std::endl;
+    #endif 
 
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);
