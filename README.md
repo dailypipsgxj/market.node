@@ -1,8 +1,8 @@
 Market.Node
 ============
 
-An open source financial exchange toolkit from [Furosys Solutions](http://www.furosys.com/).
-
+An open source financial exchange toolkit.
+::
 ## Goals
 * Facilitate rapid development and deployment of high-performance, scalable exchanges.
 * Provide FAST1.2, FIX5.0SP2/FIXT1.1, and JSON-RPC reference gateways.

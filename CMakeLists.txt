@@ -20,16 +20,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     )
 endif()
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(
-        -std=c++11
-        -g
-        -O0
-        -D_LARGEFILE_SOURCE
-        -D_FILE_OFFSET_BITS=64
-    )
-endif()
-
 include_directories(
     ${MARKETNODE_SOURCE_DIR}/include
     ${uv_SOURCE_DIR}/include

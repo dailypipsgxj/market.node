@@ -11,10 +11,7 @@ namespace market {
     namespace model { 
 
         // @brief binding of DepthOrderBook template with Order pointer.
-        template <int SIZE = 5>
-        class OrderBook : 
-            public market::book::DepthOrderBook<market::model::Order*, SIZE>,
-            public market::disruptor::EventProcessorInterface<market::model::Order>
+        class OrderBook : public market::book::DepthOrderBook<market::model::Order*, 5>
         {
             public:
                 OrderBook(
@@ -39,7 +36,7 @@ namespace market {
                     return &sequence_;
                 }
 
-                 virtual void
+                virtual void
                 Halt()
                 {   
                     running_.store(false);
@@ -106,11 +103,10 @@ namespace market {
                 DISALLOW_COPY_AND_ASSIGN(OrderBook);
         };
 
-        template <int SIZE>
         inline void
-        OrderBook<SIZE>::perform_callback(MarketCallback& cb)
+        OrderBook::perform_callback(MarketCallback& cb)
         {
-            book::DepthOrderBook<Order*, SIZE>::perform_callback(cb);
+            book::DepthOrderBook<Order*, 5>::perform_callback(cb);
             switch(cb.type) {
                 case MarketCallback::cb_order_accept: {
                     cb.order->accept();

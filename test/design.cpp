@@ -11,6 +11,7 @@
 #include <array>
 #include <thread>
 #include <future>
+#include <functional>
 
 // The OrderBufferFactory is responsible for initializing the backing store for the RingBuffer.
 class OrderBufferFactory : public market::disruptor::EventFactoryInterface<market::model::Order>
